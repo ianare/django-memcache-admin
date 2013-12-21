@@ -1,17 +1,67 @@
 {% extends "admin/base_site.html" %}
 {% load i18n memcache_admin %}
 
+
+{% block extrahead %}
+<style type="text/css">
+
+table.memcache td {
+    vertical-align: middle;
+}
+
+.memcache #usage.progress {
+  background-color: #777;
+  background-image: linear-gradient(to bottom, #666, #888);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+  height: 20px;
+  overflow: hidden;
+  min-width: 240px;
+  position: relative;
+}
+.memcache #usage.progress .bar {
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
+  color: #FFFFFF;
+  float: left;
+  height: 100%;
+  text-align: center;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.memcache #usage.progress-success .bar {
+  background-color: #5EB95E;
+  background-image: linear-gradient(to bottom, #62C462, #57A957);
+}
+.memcache #usage.progress-warning .bar {
+  background-color: #FAA732;
+  background-image: linear-gradient(to bottom, #F5A93D, #ED8D05);
+}
+.memcache #usage.progress-danger .bar {
+  background-color: #DD514C;
+  background-image: linear-gradient(to bottom, #EE5F5B, #C43C35);
+}
+.memcache #usage.progress .bar-text {
+  font-size: 12px;
+  color: #FFF;
+  position: absolute;
+  left: 4%;
+  top: 4px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+</style>
+{% endblock %}
+
+
 {% block content %}
 <a href="flush/">Flush Cache</a>
-<table>
+<table class="memcache">
 <caption>Memcached Servers</caption>
 <tr>
     <th>{% trans 'Host:Port' %}</th>
     <th>{% trans 'Uptime' %}</th>
-    <th>{% trans 'Conn.' %}</th>
-    <th>{% trans 'Size' %}</th>
-    <th>{% trans 'Usage (%)' %}</th>
+    <th>{% trans 'Usage' %}</th>
     <th>{% trans 'Items' %}</th>
+    <th>{% trans 'Conn.' %}</th>
     <th>{% trans 'Hit Rate' %}</th>
     <th>{% trans 'Input' %}</th>
     <th>{% trans 'Output' %}</th>
@@ -21,16 +71,24 @@
 <tr>
     <td>{{ server }}</td>
     <td>{{ data.uptime|timestamp }}</td>
-    <td>{{ data.curr_connections }}</td>
-    <td>{{ data.limit_maxbytes|human_bytes }}</td>
-    <td>{{ data.bytes|human_bytes }} ({% widthratio data.bytes data.limit_maxbytes 100 %}%)</td>
+    <td>
+    <div id="usage" class="progress {% if data.usage_percent <= 60 %}progress-success{% elif data.usage_percent <= 85 %}progress-warning{% else %}progress-danger{% endif %}">
+        <span class="bar-text">
+            {{ data.bytes|human_bytes }} {% trans 'of' %} {{ data.limit_maxbytes|human_bytes }}
+            ({{ data.usage_percent }}%)
+        </span>
+        <div class="bar" style="width:{{ data.usage_percent }}%;"></div>
+    </div>
+
+
+    </td>
     <td>{{ data.curr_items }}</td>
+    <td>{{ data.curr_connections }}</td>
     <td>{% widthratio data.get_misses data.cmd_get 100 %}</td>
     <td>{{ data.bytes_read|human_bytes }}</td>
     <td>{{ data.bytes_written|human_bytes }}</td>
-    <td><a href="stats/{{server}}">stats</a></td>
-    <td><a href="slabs/{{server}}">slabs</a></td>
-    <td></td>
+    <td><a href="{% url 'admin:stats' server %}">stats</a></td>
+    <td><a href="{% url 'admin:slabs' server %}">slabs</a></td>
 </tr>
 {% endfor %}
 <table>

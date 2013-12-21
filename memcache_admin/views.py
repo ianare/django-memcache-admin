@@ -8,26 +8,33 @@ from django.template import RequestContext
 from django.core.cache import cache
 
 
-def _get_server_info(info, server_name=None):
+def _get_cache_stats(server_name=None):
     """
-    Get slab or stats info by server.
+    Get slab info.
     """
     server_info = {}
-    for svr in info:
+    for svr in cache._cache.get_stats():
+        svr_info = svr[0].split(' ')
+        svr_name = svr_info[0]
+        svr_stats = svr[1]
+        svr_stats['usage_percent'] = round(100 * float(svr_stats['bytes']) / float(svr_stats['limit_maxbytes']), 1)
+        if server_name and server_name == svr_name:
+            return svr_data
+        server_info[svr_name] = svr_stats
+    return server_info
+
+def _get_cache_slabs(server_name=None):
+    """
+    Get stats info.
+    """
+    server_info = {}
+    for svr in cache._cache.get_slabs():
         svr_info = svr[0].split(' ')
         svr_name = svr_info[0]
         if server_name and server_name == svr_name:
             return svr[1]
         server_info[svr_name] = svr[1]
     return server_info
-
-
-def _get_cache_stats(server_name=None):
-    return _get_server_info(cache._cache.get_stats(), server_name)
-
-
-def _get_cache_slabs(server_name=None):
-    return _get_server_info(cache._cache.get_slabs(), server_name)
 
 
 def dashboard(request):
