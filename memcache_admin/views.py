@@ -26,6 +26,7 @@ def _get_cache_stats(server_name=None):
         svr_stats = svr[1]
         svr_stats['bytes_percent'] = _percent(svr_stats, 'bytes', 'limit_maxbytes')
         svr_stats['get_hit_rate'] = _percent(svr_stats, 'get_hits', 'cmd_get')
+        svr_stats['get_miss_rate'] = _percent(svr_stats, 'get_misses', 'cmd_get')
         if server_name and server_name == svr_name:
             return svr_stats
         server_info[svr_name] = svr_stats
@@ -82,8 +83,8 @@ def slabs(request, server_name):
 
 def flush(request):
     """
-    Flush.
+    Flush servers.
     """
     cache.clear()
     messages.success(request, 'Memcache was flushed.')
-    return redirect('/admin/memcache_admin/memcached/')
+    return redirect('admin:mc_dashboard')

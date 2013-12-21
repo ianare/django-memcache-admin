@@ -197,7 +197,7 @@
         </tr>
         <tr>
             <th>{% trans 'Misses' %}</th>
-            <td>{{ cache_stats.get_misses }}</td>
+            <td>{{ cache_stats.get_misses }} — {{ cache_stats.get_miss_rate }}%</td>
         </tr>
         </table>
         <h2>{% trans 'CAS' %}</h2>
