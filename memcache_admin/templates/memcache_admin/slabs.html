@@ -1,0 +1,27 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:index' %}memcache_admin/memcached/">Memcache Dashboard</a>
+&rsaquo; {{ title }}
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}
+{% for slab, data in cache_slabs.items %}
+<div class="module">
+    <h2>Slab: {{slab}}</h2>
+    <table>
+    {% for k, v in data.items %}
+    <tr>
+        <td>{{k}}</td><td>{{v}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endfor %}
+{% endblock %}

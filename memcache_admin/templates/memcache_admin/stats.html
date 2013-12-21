@@ -1,0 +1,254 @@
+{% extends "admin/base_site.html" %}
+{% load i18n memcache_admin %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:index' %}memcache_admin/memcached/">Memcache Dashboard</a>
+&rsaquo; {{ title }}
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}
+
+<div class="module">
+    <h2>{% trans 'Server' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Version' %}</th>
+        <td>{{ cache_stats.version }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Libevent Version' %}</th>
+        <td>{{ cache_stats.libevent }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Time' %}</th>
+        <td>{{ cache_stats.time|datetimestamp }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Process ID' %}</th>
+        <td>{{ cache_stats.pid }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Threads' %}</th>
+        <td>{{ cache_stats.threads }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Uptime' %}</th>
+        <td>{{ cache_stats.uptime|timestamp }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'User Time' %}</th>
+        <td>{{ cache_stats.rusage_user }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'System Time' %}</th>
+        <td>{{ cache_stats.rusage_system }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Auth Commands' %}</th>
+        <td>{{ cache_stats.auth_cmds }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Auth Errors' %}</th>
+        <td>{{ cache_stats.auth_errors }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Pointer Size' %}</th>
+        <td>{{ cache_stats.pointer_size }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Reserved FDS' %}</th>
+        <td>{{ cache_stats.reserved_fds }}</td>
+    </tr>
+    </table>
+</div>
+
+<div class="module">
+    <h2>{% trans 'Connections' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Accepting Connections' %}</th>
+        <td>{{ cache_stats.accepting_conns|yes_no }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Current Connections' %}</th>
+        <td>{{ cache_stats.curr_connections }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Total Connections' %}</th>
+        <td>{{ cache_stats.total_connections }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Connection Yields' %}</th>
+        <td>{{ cache_stats.conn_yields }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Connection Structures' %}</th>
+        <td>{{ cache_stats.connection_structures }}</td>
+    </tr>
+    </table>
+</div>
+
+<div class="module">
+    <h2>{% trans 'Data' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Size' %}</th>
+        <td>{{ cache_stats.limit_maxbytes|human_bytes }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Used' %}</th>
+        <td>{{ cache_stats.bytes|human_bytes }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Read (input)' %}</th>
+        <td>{{ cache_stats.bytes_read|human_bytes }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Written (output)' %}</th>
+        <td>{{ cache_stats.bytes_written|human_bytes }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Current Items' %}</th>
+        <td>{{ cache_stats.curr_items }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Total Items' %}</th>
+        <td>{{ cache_stats.total_items }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Set Commands' %}</th>
+        <td>{{ cache_stats.cmd_set }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Hash Bytes' %}</th>
+        <td>{{ cache_stats.hash_bytes }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Hash Power Level' %}</th>
+        <td>{{ cache_stats.hash_power_level }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Hash Expanding' %}</th>
+        <td>{{ cache_stats.hash_is_expanding|yes_no }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Evictions' %}</th>
+        <td>{{ cache_stats.evictions }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Evicted Unfetched' %}</th>
+        <td>{{ cache_stats.evicted_unfetched }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Reclaimed' %}</th>
+        <td>{{ cache_stats.reclaimed }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Expired Unfetched' %}</th>
+        <td>{{ cache_stats.expired_unfetched }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Flush Commands' %}</th>
+        <td>{{ cache_stats.cmd_flush }}</td>
+    </tr>
+    </table>
+</div>
+
+<div class="module">
+    <h2>{% trans 'Get' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Commands' %}</th>
+        <td>{{ cache_stats.cmd_get }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Hits' %}</th>
+        <td>{{ cache_stats.get_hits }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Misses' %}</th>
+        <td>{{ cache_stats.get_misses }}</td>
+    </tr>
+    </table>
+</div>
+
+<div class="module">
+    <h2>{% trans 'Delete' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Hits' %}</th>
+        <td>{{ cache_stats.delete_hits }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Misses' %}</th>
+        <td>{{ cache_stats.delete_misses }}</td>
+    </tr>
+    </table>
+</div>
+
+<div class="module">
+    <h2>{% trans 'CAS' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Hits' %}</th>
+        <td>{{ cache_stats.cas_hits }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Misses' %}</th>
+        <td>{{ cache_stats.cas_misses }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Bad Values' %}</th>
+        <td>{{ cache_stats.cas_badval }}</td>
+    </tr>
+    </table>
+</div>
+
+<div class="module">
+    <h2>{% trans 'Increment' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Hits' %}</th>
+        <td>{{ cache_stats.incr_hits }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Misses' %}</th>
+        <td>{{ cache_stats.incr_misses }}</td>
+    </tr>
+    </table>
+</div>
+
+<div class="module">
+    <h2>{% trans 'Decrement' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Hits' %}</th>
+        <td>{{ cache_stats.decr_hits }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Misses' %}</th>
+        <td>{{ cache_stats.decr_misses }}</td>
+    </tr>
+    </table>
+</div>
+
+<div class="module">
+    <h2>{% trans 'Touch' %}</h2>
+    <table>
+    <tr>
+        <th>{% trans 'Hits' %}</th>
+        <td>{{ cache_stats.touch_hits }}</td>
+    </tr>
+    <tr>
+        <th>{% trans 'Misses' %}</th>
+        <td>{{ cache_stats.touch_misses }}</td>
+    </tr>
+    </table>
+</div>
+
+{% endblock %}

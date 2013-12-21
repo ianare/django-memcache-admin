@@ -1,0 +1,37 @@
+{% extends "admin/base_site.html" %}
+{% load i18n memcache_admin %}
+
+{% block content %}
+<a href="flush/">Flush Cache</a>
+<table>
+<caption>Memcached Servers</caption>
+<tr>
+    <th>{% trans 'Host:Port' %}</th>
+    <th>{% trans 'Uptime' %}</th>
+    <th>{% trans 'Conn.' %}</th>
+    <th>{% trans 'Size' %}</th>
+    <th>{% trans 'Usage (%)' %}</th>
+    <th>{% trans 'Items' %}</th>
+    <th>{% trans 'Hit Rate' %}</th>
+    <th>{% trans 'Input' %}</th>
+    <th>{% trans 'Output' %}</th>
+    <th colspan=2>&nbsp;</th>
+</tr>
+{% for server, data in cache_stats.items %}
+<tr>
+    <td>{{ server }}</td>
+    <td>{{ data.uptime|timestamp }}</td>
+    <td>{{ data.curr_connections }}</td>
+    <td>{{ data.limit_maxbytes|human_bytes }}</td>
+    <td>{{ data.bytes|human_bytes }} ({% widthratio data.bytes data.limit_maxbytes 100 %}%)</td>
+    <td>{{ data.curr_items }}</td>
+    <td>{% widthratio data.get_misses data.cmd_get 100 %}</td>
+    <td>{{ data.bytes_read|human_bytes }}</td>
+    <td>{{ data.bytes_written|human_bytes }}</td>
+    <td><a href="stats/{{server}}">stats</a></td>
+    <td><a href="slabs/{{server}}">slabs</a></td>
+    <td></td>
+</tr>
+{% endfor %}
+<table>
+{% endblock %}
