@@ -1,7 +1,7 @@
 
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render_to_response
 from django.conf import settings
 from django.contrib import messages
 from django.core.cache import cache
@@ -37,7 +37,7 @@ def dashboard(request):
         'title': 'Memcache Dashboard',
         'cache_stats': _get_cache_stats()
     }
-    return render(request, 'memcache_admin/dashboard.html', data)
+    return render_to_response('memcache_admin/dashboard.html', data, RequestContext(request))
 
 
 def stats(request, server_name):
@@ -49,7 +49,7 @@ def stats(request, server_name):
         'title': 'Memcache Statistics for %s' % server_name,
         'cache_stats': _get_cache_stats(server_name)
     }
-    return render(request, 'memcache_admin/stats.html', data)
+    return render_to_response('memcache_admin/stats.html', data, RequestContext(request))
 
 
 def slabs(request, server_name):
@@ -60,7 +60,7 @@ def slabs(request, server_name):
         'title': 'Memcache Slabs for %s' % server_name,
         'cache_slabs': _get_cache_slabs(server_name)
     }
-    return render(request, 'memcache_admin/slabs.html', data)
+    return render_to_response('memcache_admin/slabs.html', data, RequestContext(request))
 
 
 def flush(request):
