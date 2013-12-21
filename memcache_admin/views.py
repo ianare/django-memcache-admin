@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import redirect, render_to_response
 from django.conf import settings
 from django.contrib import messages
+from django.template import RequestContext
 from django.core.cache import cache
 
 
