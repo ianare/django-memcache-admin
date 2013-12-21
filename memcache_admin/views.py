@@ -8,6 +8,13 @@ from django.template import RequestContext
 from django.core.cache import cache
 
 
+def _percent(data, part, total):
+    try:
+        return round(100 * float(data[part]) / float(data[total]), 1)
+    except ZeroDivisionError:
+        return 0
+
+
 def _get_cache_stats(server_name=None):
     """
     Get slab info.
@@ -17,11 +24,13 @@ def _get_cache_stats(server_name=None):
         svr_info = svr[0].split(' ')
         svr_name = svr_info[0]
         svr_stats = svr[1]
-        svr_stats['usage_percent'] = round(100 * float(svr_stats['bytes']) / float(svr_stats['limit_maxbytes']), 1)
+        svr_stats['bytes_percent'] = _percent(svr_stats, 'bytes', 'limit_maxbytes')
+        svr_stats['get_hit_rate'] = _percent(svr_stats, 'get_hits', 'cmd_get')
         if server_name and server_name == svr_name:
-            return svr_data
+            return svr_stats
         server_info[svr_name] = svr_stats
     return server_info
+
 
 def _get_cache_slabs(server_name=None):
     """

@@ -5,11 +5,39 @@
 {% block extrahead %}
 <style type="text/css">
 
-table.memcache td {
-    vertical-align: middle;
+.mc-servers td {
+  vertical-align: middle;
 }
 
-.memcache #usage.progress {
+.mc-servers a.btn {
+  background-color: #F5F5F5;
+  background-image: linear-gradient(to bottom, #FFFFFF, #E6E6E6);
+  background-repeat: repeat-x;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) #B3B3B3;
+  border-image: none;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: #333333;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 0;
+  padding: 4px 12px;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  vertical-align: middle;
+}
+
+.mc-servers a.btn-mini {
+  border-radius: 3px;
+  font-size: 10.5px;
+  padding: 0 5px;
+}
+
+.mc-servers #usage.progress {
   background-color: #777;
   background-image: linear-gradient(to bottom, #666, #888);
   border-radius: 4px;
@@ -19,7 +47,7 @@ table.memcache td {
   min-width: 240px;
   position: relative;
 }
-.memcache #usage.progress .bar {
+.mc-servers #usage.progress .bar {
   box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
   color: #FFFFFF;
   float: left;
@@ -27,69 +55,80 @@ table.memcache td {
   text-align: center;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
-.memcache #usage.progress-success .bar {
+.mc-servers #usage.progress-success .bar {
   background-color: #5EB95E;
   background-image: linear-gradient(to bottom, #62C462, #57A957);
 }
-.memcache #usage.progress-warning .bar {
+.mc-servers #usage.progress-warning .bar {
   background-color: #FAA732;
   background-image: linear-gradient(to bottom, #F5A93D, #ED8D05);
 }
-.memcache #usage.progress-danger .bar {
+.mc-servers #usage.progress-danger .bar {
   background-color: #DD514C;
   background-image: linear-gradient(to bottom, #EE5F5B, #C43C35);
 }
-.memcache #usage.progress .bar-text {
-  font-size: 12px;
+.mc-servers #usage.progress .bar-text {
+  font-size: 11px;
   color: #FFF;
   position: absolute;
   left: 4%;
-  top: 4px;
   font-weight: bold;
+  line-height: 20px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  font-family: "Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
 }
+
+.mc-servers .actions {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
 </style>
 {% endblock %}
 
 
 {% block content %}
-<a href="flush/">Flush Cache</a>
-<table class="memcache">
-<caption>Memcached Servers</caption>
-<tr>
-    <th>{% trans 'Host:Port' %}</th>
-    <th>{% trans 'Uptime' %}</th>
-    <th>{% trans 'Usage' %}</th>
-    <th>{% trans 'Items' %}</th>
-    <th>{% trans 'Conn.' %}</th>
-    <th>{% trans 'Hit Rate' %}</th>
-    <th>{% trans 'Input' %}</th>
-    <th>{% trans 'Output' %}</th>
-    <th colspan=2>&nbsp;</th>
-</tr>
-{% for server, data in cache_stats.items %}
-<tr>
-    <td>{{ server }}</td>
-    <td>{{ data.uptime|timestamp }}</td>
-    <td>
-    <div id="usage" class="progress {% if data.usage_percent <= 60 %}progress-success{% elif data.usage_percent <= 85 %}progress-warning{% else %}progress-danger{% endif %}">
-        <span class="bar-text">
-            {{ data.bytes|human_bytes }} {% trans 'of' %} {{ data.limit_maxbytes|human_bytes }}
-            ({{ data.usage_percent }}%)
-        </span>
-        <div class="bar" style="width:{{ data.usage_percent }}%;"></div>
+<div class="mc-servers">
+    <table>
+    <caption>Memcached Servers</caption>
+    <tr>
+        <th>{% trans 'Host:Port' %}</th>
+        <th>{% trans 'Uptime' %}</th>
+        <th>{% trans 'Usage' %}</th>
+        <th>{% trans 'Items' %}</th>
+        <th>{% trans 'Conn.' %}</th>
+        <th>{% trans 'Hit Rate' %}</th>
+        <th>{% trans 'Input' %}</th>
+        <th>{% trans 'Output' %}</th>
+        <th colspan=2>&nbsp;</th>
+    </tr>
+    {% for server, data in cache_stats.items %}
+    <tr>
+        <td>{{ server }}</td>
+        <td>{{ data.uptime|timestamp }}</td>
+        <td>
+        <div id="usage" class="progress {% if data.bytes_percent <= 70 %}progress-success{% elif data.bytes_percent <= 90 %}progress-warning{% else %}progress-danger{% endif %}">
+            <span class="bar-text">
+                {{ data.bytes|human_bytes }} {% trans 'of' %} {{ data.limit_maxbytes|human_bytes }}
+                ({{ data.bytes_percent }}%)
+            </span>
+            <div class="bar" style="width:{{ data.bytes_percent }}%;"></div>
+        </div>
+
+
+        </td>
+        <td>{{ data.curr_items }}</td>
+        <td>{{ data.curr_connections }}</td>
+        <td>{{ data.get_hit_rate }}</td>
+        <td>{{ data.bytes_read|human_bytes }}</td>
+        <td>{{ data.bytes_written|human_bytes }}</td>
+        <td><a class="btn btn-mini" href="{% url 'admin:mc_stats' server %}">stats</a></td>
+        <td><a class="btn btn-mini" href="{% url 'admin:mc_slabs' server %}">slabs</a></td>
+    </tr>
+    {% endfor %}
+    <table>
+    <div class="actions">
+        <a href="{% url 'admin:mc_flush' %}" class="btn">Flush Cache</a>
     </div>
-
-
-    </td>
-    <td>{{ data.curr_items }}</td>
-    <td>{{ data.curr_connections }}</td>
-    <td>{% widthratio data.get_misses data.cmd_get 100 %}</td>
-    <td>{{ data.bytes_read|human_bytes }}</td>
-    <td>{{ data.bytes_written|human_bytes }}</td>
-    <td><a href="{% url 'admin:stats' server %}">stats</a></td>
-    <td><a href="{% url 'admin:slabs' server %}">slabs</a></td>
-</tr>
-{% endfor %}
-<table>
+</div>
 {% endblock %}

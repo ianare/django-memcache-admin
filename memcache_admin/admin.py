@@ -17,10 +17,10 @@ class MemcachedAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(MemcachedAdmin, self).get_urls()
         urlpatterns = patterns('memcache_admin.views',
-            url(r'^$', self.admin_site.admin_view(views.dashboard), name='dashboard'),
-            url(r'^flush/$', self.admin_site.admin_view(views.flush), name='flush'),
-            url(r'^stats/(?P<server_name>.+)$', self.admin_site.admin_view(views.stats), name='stats'),
-            url(r'^slabs/(?P<server_name>.+)$', self.admin_site.admin_view(views.slabs), name='slabs'),
+            url(r'^$', self.admin_site.admin_view(views.dashboard), name='mc_dashboard'),
+            url(r'^flush/$', self.admin_site.admin_view(views.flush), name='mc_flush'),
+            url(r'^stats/(?P<server_name>.+)$', self.admin_site.admin_view(views.stats), name='mc_stats'),
+            url(r'^slabs/(?P<server_name>.+)$', self.admin_site.admin_view(views.slabs), name='mc_slabs'),
         )
         return urlpatterns + urls
 

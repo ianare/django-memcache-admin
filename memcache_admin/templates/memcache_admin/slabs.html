@@ -5,23 +5,40 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
 <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-&rsaquo; <a href="{% url 'admin:index' %}memcache_admin/memcached/">Memcache Dashboard</a>
+&rsaquo; <a href="{% url 'admin:mc_dashboard' %}">Memcache Dashboard</a>
 &rsaquo; {{ title }}
 </div>
 {% endblock %}
 {% endif %}
 
+{% block extrahead %}
+<style type="text/css">
+
+.mc-slabs .module {
+  float: left;
+  margin-right: 5px;
+}
+
+.mc-slabs .module-small table {
+  width: 100%
+}
+
+</style>
+{% endblock %}
+
 {% block content %}
-{% for slab, data in cache_slabs.items %}
-<div class="module">
-    <h2>Slab: {{slab}}</h2>
-    <table>
-    {% for k, v in data.items %}
-    <tr>
-        <td>{{k}}</td><td>{{v}}</td>
-    </tr>
+<div class="mc-slabs">
+    {% for slab, data in cache_slabs.items %}
+    <div class="module">
+        <h2>Slab: {{slab}}</h2>
+        <table>
+        {% for k, v in data.items %}
+        <tr>
+            <td>{{k}}</td><td>{{v}}</td>
+        </tr>
+        {% endfor %}
+        </table>
+    </div>
     {% endfor %}
-    </table>
 </div>
-{% endfor %}
 {% endblock %}
