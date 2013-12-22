@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.template import RequestContext
 from django.core.cache import cache
 
+mc_client = cache._cache
 
 def _percent(data, part, total):
     try:
@@ -17,10 +18,10 @@ def _percent(data, part, total):
 
 def _get_cache_stats(server_name=None):
     """
-    Get slab info.
+    Get stats info.
     """
     server_info = {}
-    for svr in cache._cache.get_stats():
+    for svr in mc_client.get_stats():
         svr_info = svr[0].split(' ')
         svr_name = svr_info[0]
         svr_stats = svr[1]
@@ -35,10 +36,10 @@ def _get_cache_stats(server_name=None):
 
 def _get_cache_slabs(server_name=None):
     """
-    Get stats info.
+    Get slabs info.
     """
     server_info = {}
-    for svr in cache._cache.get_slabs():
+    for svr in mc_client.get_slabs():
         svr_info = svr[0].split(' ')
         svr_name = svr_info[0]
         if server_name and server_name == svr_name:
@@ -53,7 +54,8 @@ def dashboard(request):
     """
     data = {
         'title': 'Memcache Dashboard',
-        'cache_stats': _get_cache_stats()
+        'cache_stats': _get_cache_stats(),
+        'can_get_slabs': hasattr(mc_client, 'get_slabs')
     }
     return render_to_response('memcache_admin/dashboard.html', data, RequestContext(request))
 

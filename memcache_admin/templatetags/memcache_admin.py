@@ -50,6 +50,8 @@ def yes_no(value):
     """
     Convert integer or boolean to words.
     """
+    if not value:
+        return ''
     if int(value):
         return _("Yes")
     else:
