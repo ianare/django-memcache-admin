@@ -16,9 +16,28 @@ Install
 
 Install via pip::
 
-    pip install https://github.com/ianare/django-memcache-admin/archive/master.zip
+    pip install django-memcache-admin
+
+Add ``memcache_admin`` to ``INSTALLED_APPS`` in your setting.py file.
+
+The application will be available in the admin panel.
 
 
-Add ``memcache_admin`` to your ``INSTALLED_APPS`` in your setting.py file.
+Compatibility
+-------------
 
-The application will be available in your admin panel.
+* Django 1.6 and up.
+* For best results, `python-memcached` should be used.
+* `pylibmc` can be used, but not all information will be available.
+
+
+Acknowledgements
+----------------
+
+Some ideas taken from the `django-memcache-status` and `django-memcached2` projects.
+
+
+License
+-------
+
+GNU Lesser General Public License, version 3.

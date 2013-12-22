@@ -6,6 +6,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.template import RequestContext
 from django.core.cache import cache
+from django.utils.translation import ugettext as _
+
 
 mc_client = cache._cache
 
@@ -53,7 +55,7 @@ def dashboard(request):
     Show the dashboard.
     """
     data = {
-        'title': 'Memcache Dashboard',
+        'title': _('Memcache Dashboard'),
         'cache_stats': _get_cache_stats(),
         'can_get_slabs': hasattr(mc_client, 'get_slabs')
     }
@@ -66,7 +68,7 @@ def stats(request, server_name):
     """
     server_name = server_name.strip('/')
     data = {
-        'title': 'Memcache Statistics for %s' % server_name,
+        'title': _('Memcache Statistics for %s') % server_name,
         'cache_stats': _get_cache_stats(server_name)
     }
     return render_to_response('memcache_admin/stats.html', data, RequestContext(request))
@@ -77,7 +79,7 @@ def slabs(request, server_name):
     Show server slabs.
     """
     data = {
-        'title': 'Memcache Slabs for %s' % server_name,
+        'title': _('Memcache Slabs for %s') % server_name,
         'cache_slabs': _get_cache_slabs(server_name)
     }
     return render_to_response('memcache_admin/slabs.html', data, RequestContext(request))
@@ -88,5 +90,5 @@ def flush(request):
     Flush servers.
     """
     cache.clear()
-    messages.success(request, 'Memcache was flushed.')
+    messages.success(request, _('Memcache was flushed.'))
     return redirect('admin:mc_dashboard')
