@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import redirect, render_to_response
-from django.conf import settings
 from django.contrib import messages
 from django.template import RequestContext
 from django.core.cache import cache
@@ -10,6 +9,7 @@ from django.utils.translation import ugettext as _
 
 
 mc_client = cache._cache
+
 
 def _percent(data, part, total):
     try:

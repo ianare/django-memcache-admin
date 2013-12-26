@@ -1,4 +1,3 @@
-
 from __future__ import unicode_literals
 
 from django.contrib import admin
@@ -6,6 +5,7 @@ from .models import Memcached
 
 from django.conf.urls import patterns, url
 from . import views
+
 
 class MemcachedAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
