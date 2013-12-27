@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Memcached
+from .models import Dashboard
 
 from django.conf.urls import patterns, url
 from . import views
@@ -26,4 +26,4 @@ class MemcachedAdmin(admin.ModelAdmin):
         return urlpatterns + urls
 
 
-admin.site.register(Memcached, MemcachedAdmin)
+admin.site.register(Dashboard, MemcachedAdmin)
