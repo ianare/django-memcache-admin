@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="django-memcache-admin",
-    version='0.0.2',
+    version='0.0.3',
     author="Ianaré Sévi",
     author_email="ianare@gmail.com",
     url="https://github.com/ianare/django-memcache-admin",
