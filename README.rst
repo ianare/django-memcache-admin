@@ -8,29 +8,50 @@ Django Memcache Admin
 
 Memcache admin for Django.
 
-* Show cluster information.
+* Show cluster information, optionally auto-updated.
 * Show a server's statistics.
 * Show a server's slabs.
 * Flush the cluster.
 
 ...more to come!
 
+This module is still in *alpha status*: more testing is needed, and changes can be made without regard
+to backwards compatibility.
+
 
 Install
 -------
-
 Install via pip::
 
     pip install django-memcache-admin
 
-Add ``memcache_admin`` to ``INSTALLED_APPS`` in your setting.py file.
+Add ``memcache_admin`` to ``INSTALLED_APPS`` in your ``settings.py`` file.
 
 The application will be available in the admin panel.
 
 
+Permissions
+-----------
+To use this module, a user must have access to the Django admin panel and have *change* permissions on the
+``memcache_admin | Memcache Dashboard`` model.
+
+Setting *add* or *delete* permissions has no effect, they are always false.
+
+
+Settings
+--------
+In your ``settings.py`` file, you can add a dictionary called ``MEMCACHE_ADMIN``.
+
+The following key/value settings are available:
+
+``REFRESH_RATE`` : integer — Sets the auto-update refresh rate in milliseconds for the server information in the dashboard.
+Note that auto-updating must still be activated in the dashboard for this to take effect.
+If set to ``None``, refreshing will be disabled (unavailable in the dashboard interface).
+Default is 5000 milliseconds (5 seconds).
+
+
 Compatibility
 -------------
-
 * Django 1.6 and up.
 * For best results, `python-memcached <https://pypi.python.org/pypi/python-memcached/>`_ should be used.
 * `pylibmc <https://pypi.python.org/pypi/pylibmc/>`_ can be used, but not all information will be available.
@@ -38,7 +59,6 @@ Compatibility
 
 Acknowledgements
 ----------------
-
 Some ideas taken from the
 `django-memcache-status <https://pypi.python.org/pypi/django-memcache-status/1.1/>`_
 and `django-memcached2 <https://pypi.python.org/pypi/django-memcached2/>`_ projects
@@ -46,5 +66,4 @@ and `django-memcached2 <https://pypi.python.org/pypi/django-memcached2/>`_ proje
 
 License
 -------
-
 GNU Lesser General Public License, version 3.
