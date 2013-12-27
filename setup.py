@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
+import memcache_admin
 
 setup(
     name="django-memcache-admin",
-    version='0.0.3',
+    version=memcache_admin.__version__,
     author="Ianaré Sévi",
     author_email="ianare@gmail.com",
     url="https://github.com/ianare/django-memcache-admin",
     license="LGPLv3+",
     keywords="memcached",
-    description="Memcache admin for Django.",
+    description=" ".join(memcache_admin.__doc__.splitlines()).strip(),
     long_description=open("README.rst", "rt").read(),
     install_requires=[
         "Django>=1.6",
