@@ -5,13 +5,23 @@ from django.shortcuts import redirect, render_to_response
 from django.contrib import messages
 from django.template import RequestContext
 from django.core.cache import cache
+from django.conf import settings
 from django.utils.translation import ugettext as _
 
 
 mc_client = cache._cache
 
+SETTINGS = {
+    'REFRESH_RATE': 5000,
+}
+if hasattr(settings, 'MEMCACHE_ADMIN'):
+    SETTINGS = dict(SETTINGS.items() + settings.MEMCACHE_ADMIN.items())
+
 
 def _percent(data, part, total):
+    """
+    Calculate a percentage.
+    """
     try:
         return round(100 * float(data[part]) / float(data[total]), 1)
     except ZeroDivisionError:
@@ -50,6 +60,17 @@ def _get_cache_slabs(server_name=None):
     return server_info
 
 
+def server_status(request):
+    """
+    Return the status of all servers.
+    """
+    data = {
+        'cache_stats': _get_cache_stats(),
+        'can_get_slabs': hasattr(mc_client, 'get_slabs'),
+    }
+    return render_to_response('memcache_admin/server_status.html', data, RequestContext(request))
+
+
 def dashboard(request):
     """
     Show the dashboard.
@@ -57,7 +78,8 @@ def dashboard(request):
     data = {
         'title': _('Memcache Dashboard'),
         'cache_stats': _get_cache_stats(),
-        'can_get_slabs': hasattr(mc_client, 'get_slabs')
+        'can_get_slabs': hasattr(mc_client, 'get_slabs'),
+        'REFRESH_RATE': SETTINGS['REFRESH_RATE'],
     }
     return render_to_response('memcache_admin/dashboard.html', data, RequestContext(request))
 
@@ -69,7 +91,7 @@ def stats(request, server_name):
     server_name = server_name.strip('/')
     data = {
         'title': _('Memcache Statistics for %s') % server_name,
-        'cache_stats': _get_cache_stats(server_name)
+        'cache_stats': _get_cache_stats(server_name),
     }
     return render_to_response('memcache_admin/stats.html', data, RequestContext(request))
 
@@ -80,7 +102,7 @@ def slabs(request, server_name):
     """
     data = {
         'title': _('Memcache Slabs for %s') % server_name,
-        'cache_slabs': _get_cache_slabs(server_name)
+        'cache_slabs': _get_cache_slabs(server_name),
     }
     return render_to_response('memcache_admin/slabs.html', data, RequestContext(request))
 

@@ -1,0 +1,28 @@
+{% load i18n memcache_admin %}
+
+{% for server, data in cache_stats.items %}
+<tr>
+    <td>{{ server }}</td>
+    <td>{{ data.uptime|timestamp }}</td>
+    <td>
+    <div id="usage" class="progress {% if data.bytes_percent <= 70 %}progress-success{% elif data.bytes_percent <= 90 %}progress-warning{% else %}progress-danger{% endif %}">
+        <span class="bar-text">
+            {{ data.bytes|human_bytes }} {% trans 'of' %} {{ data.limit_maxbytes|human_bytes }}
+            ({{ data.bytes_percent }}%)
+        </span>
+        <div class="bar" style="width:{{ data.bytes_percent }}%;"></div>
+    </div>
+
+
+    </td>
+    <td>{{ data.curr_items }}</td>
+    <td>{{ data.curr_connections }}</td>
+    <td>{{ data.get_hit_rate }}</td>
+    <td>{{ data.bytes_read|human_bytes }}</td>
+    <td>{{ data.bytes_written|human_bytes }}</td>
+    <td><a class="btn btn-mini" href="{% url 'admin:mc_stats' server %}">stats</a></td>
+    {% if can_get_slabs %}
+    <td><a class="btn btn-mini" href="{% url 'admin:mc_slabs' server %}">slabs</a></td>
+    {% endif %}
+</tr>
+{% endfor %}
