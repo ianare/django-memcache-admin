@@ -27,7 +27,11 @@ Install via pip::
 
 Add ``memcache_admin`` to ``INSTALLED_APPS`` in your ``settings.py`` file.
 
-The application will be available in the admin panel.
+Update the database::
+
+    python manage.py syncdb
+
+The application will now be available in the admin panel.
 
 
 Permissions
