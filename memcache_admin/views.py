@@ -4,12 +4,15 @@ from __future__ import unicode_literals
 from django.shortcuts import redirect, render_to_response
 from django.contrib import messages
 from django.template import RequestContext
-from django.core.cache import cache
+from django.core.cache import cache, get_cache
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
+if get_cache.__module__.startswith('debug_toolbar'):
+    from debug_toolbar.panels.cache import base_get_cache as get_cache
 
-mc_client = cache._cache
+mc_client = get_cache('default')._cache
+
 
 SETTINGS = {
     'REFRESH_RATE': 5000,
