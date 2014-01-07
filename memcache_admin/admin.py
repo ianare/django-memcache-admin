@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Dashboard
-
 from django.conf.urls import patterns, url
+
+from .models import Dashboard
 from . import views
 
 
