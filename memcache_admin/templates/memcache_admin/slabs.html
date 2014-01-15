@@ -32,13 +32,17 @@
 <div class="mc-slabs">
     {% for slab, data in cache_slabs.items %}
     <div class="module">
-        <h2>Slab: {{slab}}</h2>
-        <table>
+        <table class="table table-striped table-bordered">
+        <caption>
+            <h2>Slab: {{slab}}</h2>
+        </caption>
+        <tbody>
         {% for k, v in data.items %}
         <tr>
-            <td>{{k}}</td><td>{{v}}</td>
+            <th>{{k}}</th><td>{{v}}</td>
         </tr>
         {% endfor %}
+        </tbody>
         </table>
     </div>
     {% endfor %}

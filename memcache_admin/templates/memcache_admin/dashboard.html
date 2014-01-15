@@ -49,6 +49,7 @@
   overflow: hidden;
   min-width: 240px;
   position: relative;
+  margin-bottom: 0;
 }
 .mc-servers #usage.progress .bar {
   box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) inset;
@@ -95,7 +96,7 @@
     <input type="checkbox" id="auto-refresh"> {% trans 'Auto update' %}
     {% endif %}
 
-    <table id="server-status">
+    <table id="server-status" class="table table-striped">
     <caption>Memcached Servers</caption>
     <thead>
     <tr>
@@ -113,7 +114,7 @@
     <tbody>
         {% include "memcache_admin/server_status.html" %}
     </tbody>
-    <table>
+    </table>
     <div class="actions">
         <a class="btn" onclick="update_servers();">Update</a>
         <a href="{% url 'admin:mc_flush' %}" class="btn">Flush Cache</a>

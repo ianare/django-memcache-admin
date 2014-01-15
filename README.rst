@@ -12,11 +12,11 @@ Memcache admin for Django.
 * Show a server's statistics.
 * Show a server's slabs.
 * Flush the cluster.
+* Compatible with default admin and Bootstrap.
 
 ...more to come!
 
-This module is still in *alpha status*: more testing is needed, and changes can be made without regard
-to backwards compatibility.
+This module is still in *beta status*: more testing is needed.
 
 
 Install
