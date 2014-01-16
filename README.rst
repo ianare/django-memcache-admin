@@ -48,10 +48,14 @@ In your ``settings.py`` file, you can add a dictionary called ``MEMCACHE_ADMIN``
 
 The following key/value settings are available:
 
-``REFRESH_RATE`` : integer — Sets the auto-update refresh rate in milliseconds for the server information in the dashboard.
-Note that auto-updating must still be activated in the dashboard for this to take effect.
-If set to ``None``, refreshing will be disabled (unavailable in the dashboard interface).
-Default is 5000 milliseconds (5 seconds).
+REFRESH_RATE — integer
+  Sets the auto-update refresh rate in milliseconds for the server information in the dashboard.
+  Note that auto-updating must still be activated in the dashboard for this to take effect.
+  If set to ``None``, refreshing will be disabled (unavailable in the dashboard interface).
+  Default is 5000 milliseconds (5 seconds).
+
+CACHE — string
+  The cache definition to use. Default is "default".
 
 
 Compatibility
