@@ -64,6 +64,8 @@ Compatibility
 * For best results, `python-memcached <https://pypi.python.org/pypi/python-memcached/>`_ should be used.
 * `pylibmc <https://pypi.python.org/pypi/pylibmc/>`_ can be used, but not all information will be available.
 
+This library is compatible with python 2 and 3, however the memcache packages above are only python2 compatible.
+
 
 Acknowledgements
 ----------------
