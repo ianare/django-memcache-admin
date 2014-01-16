@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import redirect, render_to_response
 from django.contrib import messages
+from django.contrib.admin import sites
 from django.template import RequestContext
 from django.core.cache import cache, get_cache
 from django.conf import settings
