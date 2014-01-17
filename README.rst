@@ -60,7 +60,7 @@ CACHE — string
 
 Compatibility
 -------------
-* Django 1.6 and up.
+* Django 1.6 and 1.7
 * For best results, `python-memcached <https://pypi.python.org/pypi/python-memcached/>`_ should be used.
 * `pylibmc <https://pypi.python.org/pypi/pylibmc/>`_ can be used, but not all information will be available.
 
