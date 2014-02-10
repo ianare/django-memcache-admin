@@ -66,7 +66,7 @@ def _get_cache_slabs(server_name=None):
 
 def _context_data(data):
     """
-    Add admin global context, for compability with Django 1.7
+    Add admin global context, for compatibility with Django 1.7
     """
     try:
         return dict(site.each_context().items() + data.items())
@@ -100,7 +100,7 @@ def dashboard(request):
 
 def stats(request, server_name):
     """
-    Show server tatistics.
+    Show server statistics.
     """
     server_name = server_name.strip('/')
     data = _context_data({
