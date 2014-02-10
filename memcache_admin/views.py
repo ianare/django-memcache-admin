@@ -89,13 +89,22 @@ def dashboard(request):
     """
     Show the dashboard.
     """
-    data = _context_data({
-        'title': _('Memcache Dashboard'),
-        'cache_stats': _get_cache_stats(),
-        'can_get_slabs': hasattr(mc_client, 'get_slabs'),
-        'REFRESH_RATE': SETTINGS['REFRESH_RATE'],
-    })
-    return render_to_response('memcache_admin/dashboard.html', data, RequestContext(request))
+    cache_stats = _get_cache_stats()
+    if cache_stats:
+        data = _context_data({
+            'title': _('Memcache Dashboard'),
+            'cache_stats': cache_stats,
+            'can_get_slabs': hasattr(mc_client, 'get_slabs'),
+            'REFRESH_RATE': SETTINGS['REFRESH_RATE'],
+        })
+        template = 'memcache_admin/dashboard.html'
+    else:
+        data = _context_data({
+            'title': _('Memcache Dashboard - Error'),
+            'error_message': _('Unable to connect to a memcache server.'),
+        })
+        template = 'memcache_admin/dashboard_error.html'
+    return render_to_response(template, data, RequestContext(request))
 
 
 def stats(request, server_name):
