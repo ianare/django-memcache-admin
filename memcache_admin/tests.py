@@ -11,6 +11,6 @@ def _random_string(length):
     return ''.join(random.choice(string.ascii_letters + string.digits) for x in range(length))
 
 
-# This should fill a 64MB server to 96%
-for i in range(1000):
+# This should fill a 64MB server to 48%
+for i in range(500):
     cache.set(_random_string(11), _random_string(64350))

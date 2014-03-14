@@ -11,7 +11,7 @@ Memcache admin for Django.
 * Show cluster information, optionally auto-updated.
 * Show a server's statistics.
 * Show a server's slabs.
-* Flush the cluster.
+* Flush the cluster (GUI and CLI).
 * Compatible with default admin and Bootstrap.
 
 ...more to come!
@@ -56,6 +56,14 @@ REFRESH_RATE — integer
 
 CACHE — string
   The cache definition to use. Default is "default".
+
+
+Commands
+--------
+Available management commands.
+
+flushmemcache
+  Invalidates all existing memcache items, so that occupied memory will be overwritten by new items.
 
 
 Compatibility
