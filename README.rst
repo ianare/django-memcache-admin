@@ -6,7 +6,7 @@ Django Memcache Admin
 .. image:: https://pypip.in/d/django-memcache-admin/badge.png
         :target: https://crate.io/packages/django-memcache-admin
 
-Memcache admin for Django.
+Memcache administration tools for Django.
 
 * Show cluster information, optionally auto-updated.
 * Show a server's statistics.
