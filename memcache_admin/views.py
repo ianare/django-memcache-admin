@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render_to_response
 from django.contrib import messages
 from django.contrib.admin import site
 from django.template import RequestContext
-from django.core.cache import cache, get_cache
+from django.core.cache import get_cache
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
@@ -134,6 +134,6 @@ def flush(request):
     """
     Flush servers.
     """
-    cache.clear()
+    mc_client.flush_all()
     messages.success(request, _('Memcache was flushed.'))
     return redirect('admin:mc_dashboard')
