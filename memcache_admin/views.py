@@ -10,7 +10,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 if get_cache.__module__.startswith('debug_toolbar'):
-    from debug_toolbar.panels.cache import base_get_cache as get_cache
+    from debug_toolbar.panels.cache import get_cache
 
 SETTINGS = {
     'REFRESH_RATE': 5000,
