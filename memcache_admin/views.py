@@ -89,7 +89,11 @@ def dashboard(request):
     """
     Show the dashboard.
     """
-    cache_stats = _get_cache_stats()
+    # mc_client will be a dict if memcached is not configured
+    if not isinstance(mc_client, dict):
+        cache_stats = _get_cache_stats()
+    else:
+        cache_stats = None
     if cache_stats:
         data = _context_data({
             'title': _('Memcache Dashboard'),
