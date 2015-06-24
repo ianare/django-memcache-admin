@@ -64,12 +64,12 @@ def _get_cache_slabs(server_name=None):
     return server_info
 
 
-def _context_data(data):
+def _context_data(data, request=None):
     """
     Add admin global context, for compatibility with Django 1.7
     """
     try:
-        return dict(site.each_context().items() + data.items())
+        return dict(site.each_context(request).items() + data.items())
     except AttributeError:
         return data
 
@@ -96,13 +96,15 @@ def dashboard(request):
             'cache_stats': cache_stats,
             'can_get_slabs': hasattr(mc_client, 'get_slabs'),
             'REFRESH_RATE': SETTINGS['REFRESH_RATE'],
-        })
+        },
+            request)
         template = 'memcache_admin/dashboard.html'
     else:
         data = _context_data({
             'title': _('Memcache Dashboard - Error'),
             'error_message': _('Unable to connect to a memcache server.'),
-        })
+        },
+            request)
         template = 'memcache_admin/dashboard_error.html'
     return render_to_response(template, data, RequestContext(request))
 
@@ -115,7 +117,8 @@ def stats(request, server_name):
     data = _context_data({
         'title': _('Memcache Statistics for %s') % server_name,
         'cache_stats': _get_cache_stats(server_name),
-    })
+    },
+        request)
     return render_to_response('memcache_admin/stats.html', data, RequestContext(request))
 
 
@@ -126,7 +129,8 @@ def slabs(request, server_name):
     data = _context_data({
         'title': _('Memcache Slabs for %s') % server_name,
         'cache_slabs': _get_cache_slabs(server_name),
-    })
+    },
+        request)
     return render_to_response('memcache_admin/slabs.html', data, RequestContext(request))
 
 
