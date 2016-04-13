@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2013-2014 ianaré sévi <ianare@gmail.com>
+# Copyright (C) 2013-2016 ianaré sévi <ianare@gmail.com>
 #
 # Django Memcache Admin is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -19,4 +19,4 @@
 Memcache administration tools for Django.
 """
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'

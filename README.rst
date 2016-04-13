@@ -1,11 +1,6 @@
 Django Memcache Admin
 =====================
 
-.. image:: https://pypip.in/v/django-memcache-admin/badge.png
-        :target: https://crate.io/packages/django-memcache-admin
-.. image:: https://pypip.in/d/django-memcache-admin/badge.png
-        :target: https://crate.io/packages/django-memcache-admin
-
 Memcache administration tools for Django.
 
 * Show cluster information, optionally auto-updated.
@@ -13,11 +8,6 @@ Memcache administration tools for Django.
 * Show a server's slabs.
 * Flush the cluster (GUI and CLI).
 * Compatible with default admin and Bootstrap.
-
-...more to come!
-
-This module is still in *beta status*: more testing is needed.
-
 
 Install
 -------
@@ -68,7 +58,7 @@ flushmemcache
 
 Compatibility
 -------------
-* Django 1.6 and 1.7
+* Tested on Django 1.6 and 1.7
 * For best results, `python-memcached <https://pypi.python.org/pypi/python-memcached/>`_ should be used.
 * `pylibmc <https://pypi.python.org/pypi/pylibmc/>`_ can be used, but not all information will be available.
 
